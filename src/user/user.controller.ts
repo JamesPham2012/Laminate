@@ -107,37 +107,4 @@ export class UserController {
   //   console.log(file);
   // }
 
-  @Post('avatar/upload')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: ImagesHelper.destinationPath,
-        filename: ImagesHelper.customFileName,
-      }),
-      fileFilter: ImagesHelper.fileFilter,
-      limits: { fileSize: 1024 * 1024 },
-    }),
-  )
-  async uploadImage(
-    @UploadedFile() file: Express.Multer.File,
-    // @Req() req,
-    @Res() res,
-    @Body() body,
-  ) {
-    console.log({ body });
-    // const file = req.file;
-    console.log(file);
-    if (file) {
-      const cloudinaryFile = await this.cloudinaryService.uploadImage(
-        `./uploads/${file.filename}`,
-      );
-      console.log({ cloudinaryFile });
-      return res.status(200);
-      // return this.userService.saveAvatar(cloudinaryFile, body.user_id);
-
-      // res.send(cloudinaryFile.url);
-    } else {
-      res.status(HttpStatus.BAD_REQUEST).send(`Cant uploads img`);
-    }
-  }
 }
